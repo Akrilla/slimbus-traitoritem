@@ -77,6 +77,7 @@ print('---')
 print("Total traitor rounds parsed: " + str(len(round_traitor_ids)))
 print('---')
 
+# Take your pick where you want the file
 # logFile = open('c:\\users\\akrilla\\desktop\\output'+'.txt', 'w')
 
 pp  = pprint.PrettyPrinter(indent=4, stream=logFile)
