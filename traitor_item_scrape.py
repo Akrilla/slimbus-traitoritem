@@ -17,9 +17,6 @@ page_numbers = []
 traitor_items = defaultdict(int)
 current_page = 1
 
-for i in range(1, pages_to_parse + 1):
-    page_numbers.append(i)
-
 
 def parse_round(traitor_round_id):
     start_request_time = time.time()
@@ -58,6 +55,9 @@ def parse_pages(current_page):
         if "traitor" in str.lower(mode):
             round_traitor_ids.append(round_id)
 
+            
+for i in range(1, pages_to_parse + 1):
+    page_numbers.append(i)
 
 print("Starting...")
 
