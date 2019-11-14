@@ -61,14 +61,14 @@ for i in range(1, pages_to_parse + 1):
 
 print("Starting...")
 
-# Can play with these numbers to not kill the site - more tends to just dos it.
+# Can play with this number to not kill the site - more tends to just dos it.
 executor = concurrent.futures.ThreadPoolExecutor(10)
 futures = [executor.submit(parse_pages, page_number) for page_number in page_numbers]
 concurrent.futures.wait(futures)
 
 print("Parsed pages...")
 
-# Can play with these numbers to not kill the site - more tends to just dos it.
+# Can play with this number to not kill the site - more tends to just dos it.
 executor = concurrent.futures.ThreadPoolExecutor(4)
 futures = [executor.submit(parse_round, single_traitor_round_id) for single_traitor_round_id in round_traitor_ids]
 concurrent.futures.wait(futures)
