@@ -7,7 +7,7 @@ import pprint
 import concurrent.futures
 
 # Free to edit - how many pages to work through.
-pages_to_parse = 5
+pages_to_parse = 100
 
 # Script vars
 start = time.time()
@@ -21,7 +21,6 @@ current_page = 1
 def parse_round(traitor_round_id):
     start_request_time = time.time()
     round_page = requests.get("https://sb.atlantaned.space/rounds/" + traitor_round_id + "/traitor_uplink_items_bought")
-    print("Time taken for request: " + str(time.time() - start_request_time))
 
     round_tree = html.fromstring(round_page.content)
 
@@ -39,7 +38,7 @@ def parse_round(traitor_round_id):
 
             traitor_items[item_name] += quantity
 
-    print("Round " + str(traitor_round_id) + " parsed.")
+    print("Round " + str(traitor_round_id) + " parsed. Took " + str(round(time.time() - start_request_time), 2) + "sec (" + round_page.status_code + ").")
 
 
 def parse_pages(current_page):
@@ -52,7 +51,7 @@ def parse_pages(current_page):
         round_id = row.xpath('./td[1]/a/i/following-sibling::text()')[0].strip()
         mode = row.xpath('./td[2]/i/following-sibling::text()')[0].strip()
 
-        if "traitor" in str.lower(mode):
+        if "traitor" or "dynamic mode" in str.lower(mode):
             round_traitor_ids.append(round_id)
 
             
@@ -69,7 +68,7 @@ concurrent.futures.wait(futures)
 print("Parsed pages...")
 
 # Can play with this number to not kill the site - more tends to just dos it.
-executor = concurrent.futures.ThreadPoolExecutor(4)
+executor = concurrent.futures.ThreadPoolExecutor(5)
 futures = [executor.submit(parse_round, single_traitor_round_id) for single_traitor_round_id in round_traitor_ids]
 concurrent.futures.wait(futures)
 
@@ -78,7 +77,7 @@ print("Total traitor rounds parsed: " + str(len(round_traitor_ids)))
 print('---')
 
 # Take your pick where you want the file
-# logFile = open('c:\\users\\akrilla\\desktop\\output'+'.txt', 'w')
+logFile = open('output.txt', 'w')
 
 pp  = pprint.PrettyPrinter(indent=4, stream=logFile)
 pprint.sorted = lambda x, key=None: x
